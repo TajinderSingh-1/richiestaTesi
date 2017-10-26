@@ -1,0 +1,30 @@
+{% extends 'myapp/offertaDettaglioBase.html' %}
+{% load staticfiles %}
+
+{% block docenti %}
+    {% if offerta.stato_valutazione != isApprovata and offerta.stato_valutazione != isRifiutata %}
+        <dd>
+            <nav>
+                <a id="accetta" href="">Approva offerta e rendi visibile agli studenti
+                    <body vlink="blue"/>
+                </a>
+                &nbsp;
+                <a id="rifiuta" href="">Rifiuta offerta e notifica rifiuto all'azienda proponente
+                    <body vlink="blue"/>
+                </a>
+                <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+                <script language="javascript" type="text/javascript"
+                        src="{% static 'myapp/approvarifiuta.js' %}"></script>
+                <script language="javascript" type="text/javascript"
+                        src="{% static 'myapp/token.js' %}"></script>
+            </nav>
+        </dd>
+
+    {% endif %}
+    {% if offerta.stato_valutazione == isApprovata %}
+        <h4>L'offerta dell'azienda è stata accettata.</h4>
+    {% elif offerta.stato_valutazione == isRifiutata %}
+        <h4>L'offerta dell'azienda è stata rifiutata.</h4>
+        <h4>Data di rifiuto: {{ offerta.data_rifiuto }}</h4>
+    {% endif %}
+{% endblock %}

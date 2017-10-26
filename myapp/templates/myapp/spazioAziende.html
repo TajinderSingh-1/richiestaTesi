@@ -1,0 +1,64 @@
+{% extends 'myapp/base.html' %}
+{% load staticfiles %}
+
+{% block primary %}
+
+    {% if request.user.groups.all.0.name == 'Aziende' %}
+
+        <h1>Operazioni:</h1>
+
+
+        <nav id="linkwrapper">
+            <a id="link1" href="#">Inserisci nuova offerta aziendale</a>
+            &nbsp;
+            <a id="link2" href="#">Offerte di tirocinio da lei immesse</a>
+        </nav>
+
+        <div id="infocontent">
+            <div id="link1content">
+                <h1>Inserisci una nuova offerta aziendale:</h1>
+                <p>
+                <form method="POST" class="post-form">
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    <p>
+                        <button type="submit" class="save btn btn-default">Inserisci offerta</button>
+                    </p>
+                </form>
+                </p>
+
+            </div>
+
+            <div id="link2content">
+                <h3>Offerte di tirocinio da lei immesse:</h3>
+                <p>
+                    <ul>
+                        {% for o in offerte %}
+                            <li><a href={% url 'myapp:offertaDettaglioAz' o.id %}>{{ o.titolo }}
+                                <body vlink="blue"/>
+                            </a></li><br>
+                        {% empty %}
+                            <li>Non ci sono offerte di tirocinio immesse.</li>
+                        {% endfor %}
+                </ul>
+
+
+                </p>
+            </div>
+        </div>
+
+    {% else %}
+        <h3>La pagina è riservata per le operazioni esclusive per le aziende.</h3>
+    {% endif %}<br>
+
+{% endblock primary %}
+
+
+{% block content %}
+    <h1>Per accedere a questa pagina bisogna essere autenticati.</h1><br>
+    Accedi al seguente link:<a href={% url 'myapp:accessoAziende' %}>Login Aziende
+    <body vlink="blue"/>
+</a>
+{% endblock content %}

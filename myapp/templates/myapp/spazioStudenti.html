@@ -1,0 +1,161 @@
+{% extends 'myapp/base.html' %}
+{% load staticfiles %}
+
+{% block primary %}
+
+    {% if request.user.groups.all.0.name == 'Studenti' %}
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.8.3.js"></script>
+        <script type="text/javascript"
+                src="{% static 'myapp/radiogroup_gestore.js' %}"></script>
+
+        <h1>Operazioni:</h1>
+
+        <nav id="linkwrapper">
+            <a id="link1" href="#"
+               title="Tesi, attività progettuali e tirocini per cui non hai effettuato la richiesta e che perciò sono richiedibili">
+                Tesi,attività progettuali e tirocini richiedibili</a>
+            &nbsp;
+            <a id="link2" href="#"
+               title="Tesi, attività progettuali e tirocini per cui hai effettuato la richiesta ma ancora non approvati">
+                Tesi, attività progettuali e tirocini richiesti</a>
+            &nbsp;
+            <a id="link3" href="#"
+               title="Tesi, attività progettuali e tirocini per cui hai effettuato la richiesta e questa è stata approvata">
+                Tesi, attività progettuali e tirocini assegnabili</a>
+            &nbsp;
+            <a id="link4" href="#"
+               title="Tesi, attività progettuale o tirocinio che era stato approvato e che ti è stato assegnato">
+                Tesi, attività progettuale o tirocinio assegnato</a>
+
+        </nav>
+
+        <div id="infocontent">
+            <div id="link1content">
+                <h2>Tesi, attività progettuali e tirocini richiedibili:</h2>
+                <details open>
+                    <summary>
+                        Proposte di tesi ed attività progettuale disponibili:
+                    </summary>
+                    <ul>
+                        {% for p in proposte_richiedibili %}
+                            <li><a href={% url 'myapp:propostaDettaglioStud' p.id %}>{{ p.titolo }}
+                                ({{ p.tipologia }})</a>, Docente: {{ p.docente }}</li>
+                            <br>
+                        {% empty %}
+                            <li>Non ci sono proposte richiedibili al momento.</li>
+                        {% endfor %}
+                    </ul>
+                </details>
+
+                <br>
+
+                <details open>
+                    <summary>
+                        Offerte di tirocinio in azienda disponibili:
+                    </summary>
+                    <p>
+                    <ul>
+                        {% for o in offerte_richiedibili %}
+                            <li><a href={% url 'myapp:offertaDettaglioStud' o.id %}>{{ o.titolo }}</a> ,
+                                Azienda: {{ o.azienda }}
+                            </li>
+                            <br>
+                        {% empty %}
+                            <li>Non ci sono offerte richiedibili al momento.</li>
+                        {% endfor %}
+                    </ul>
+                    </p>
+                </details>
+            </div>
+
+            <div id="link2content">
+                <h2>Tesi, attività progettuali e tirocini richiesti(non ancora approvati):</h2>
+
+                <details open>
+                    <summary>
+                        Richieste per tesi o attività progettuli:
+                    </summary>
+                    <dd>
+                        {% for r in proposte_richieste %}
+                            <li><a href={% url 'myapp:propostaDettaglioStud' r.id %}>{{ r.titolo }}
+                                ({{ r.tipologia }})</a>
+                                , Docente: {{ r.docente }}</li><br>
+                        {% empty %}
+                            <li>Non ci sono sottomissioni per proposte di tesi o attività progettuale.</li>
+                        {% endfor %}
+                    </dd>
+                </details>
+
+                <br>
+
+                <details open>
+                    <summary>
+                        Richieste per tirocini presso azienda:
+                    </summary>
+                    <dd>
+                        {% for o_r in offerte_richieste %}
+                            <li><a href={% url 'myapp:offertaDettaglioStud' o_r.id %}>{{ o_r.titolo }}</a> ,
+                                Azienda: {{ o_r.azienda }}</li><br>
+                        {% empty %}
+                            <li>Non ci sono sottimissioni per offerte di tirocinio in azienda al momento.</li>
+                        {% endfor %}
+                    </dd>
+                </details>
+            </div>
+
+
+            <div id="link3content">
+                <h2>Tesi, attività progettuali e tirocini assegnabili(richieste approvate):</h2>
+                {% if not richiesteapprovate and not richiesteOapprovate %}
+                    <li>Nessuna delle sue richieste effettuate è stata per ora accettata.</li>
+                {% elif studente.isAssegnato == False %}
+                    <p>Tra le tue richieste effettuate, ti sono state confermate queste qui, ora scegli quella alla
+                        quale
+                        vuoi essere assegnato.</p><br>
+                    <form method="POST" class="post-form">
+                        {% csrf_token %}
+                        {% for o in richiesteOapprovate %}
+                            <input type="radio" name="richiesteconfermateO" value="{{ o.offerta.id }}">{{ o.offerta }}
+                            (Tirocinio)<br>
+                        {% endfor %}
+
+                        {% for r in richiesteapprovate %}
+                            <input type="radio" name="richiesteconfermateP" value="{{ r.proposta.id }}">{{ r.proposta }}
+                            ({{ r.proposta.tipologia }})
+                            <br>
+                        {% endfor %}
+                        <p>
+                            <button type="submit" class="save btn btn-default"
+                                    title="Ti verrà assegnata la proposta selezionata">Accetta.
+                            </button>
+                        </p>
+                    </form>
+                {% else %}
+                    <h1>Hai già accettato una proposta/offerta che ti è stata assegnata</h1>
+                {% endif %}
+            </div>
+
+            <div id="link4content">
+                <h2>Tesi, attività progettuale o tirocinio assegnato:</h2>
+                {% if studente.isAssegnato is True %}
+                    <h2>Assegnato.</h2>
+                {% else %}
+                    <h2>Non assegnato.</h2>
+                {% endif %}
+            </div>
+
+        </div>  <!-- conten container div end-->
+
+    {% else %}
+        <h3>La pagina è riservata per le operazioni esclusive per gli studenti.</h3>
+    {% endif %}<br>
+
+{% endblock primary %}
+
+
+{% block content %}
+    <h1>Per accedere a questa pagina bisogna essere autenticati.</h1><br>
+    Accedi al seguente link:<a href={% url 'myapp:accessoStudenti' %}>Login Studenti
+    <body vlink="blue"></body>
+</a>
+{% endblock content %}

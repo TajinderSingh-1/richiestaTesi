@@ -1,0 +1,24 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+    <h2>
+        <a href={% url 'myapp:index' %}>Torna alla home
+            <body vlink="blue"/>
+        </a>
+    </h2>
+    <h1>Accesso {{ descr }}</h1>
+    <form method="POST" class="post-form">
+        <fieldset>
+            <legend>Accesso</legend>
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <p>
+                <button type="submit" class="save btn btn-default">Login</button>
+            </p>
+        </fieldset>
+    </form>
+
+{% endblock content %}
+

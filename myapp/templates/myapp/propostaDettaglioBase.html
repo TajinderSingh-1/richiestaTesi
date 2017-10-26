@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+{% load staticfiles %}
+
+{% block primary %}
+
+    <ul>
+        <li>Titolo: {{ proposta.titolo }}</li>
+        <li>Descrizione: {{ proposta.descrizione | linebreaks }}</li>
+        <li>Docente: {{ proposta.docente.nome }} {{ proposta.docente.cognome }}</li>
+        <li>Corso: {{ proposta.corso }}</li>
+        <li>Durata: {{ proposta.durata }} mesi</li>
+        <li>Tipologia: {{ proposta.tipologia }}</li>
+        {% if proposta.azienda %}
+            <li>Azienda: {{ proposta.azienda }}</li>
+        {% endif %}
+        <li>Data di immissione: {{ proposta.data_immissione }}</li>
+        <li>Stato Richiedibilità: {{ proposta.get_macrostato_display }}</li>
+        <li>Stato della proposta: {{ proposta.get_stato_display }}</li>
+        {% block stud %}
+        {% endblock %}
+    </ul>
+
+    {% if request.user.groups.all.0.name == 'Docenti' %}
+        {% block docenti %}
+
+        {% endblock %}
+    {% elif request.user.groups.all.0.name == 'Studenti' %}
+        {% block studenti %}
+
+        {% endblock %}
+    {% endif %}
+{% endblock primary %}
+
+{% block content %}
+    <h1>Per accedere a questa pagina bisogna essere autenticati.</h1><br>
+    Accedi al seguente link:<a href='/accessoDocenti'>Login Docenti
+    <body vlink="blue"/>
+</a>
+{% endblock content %}

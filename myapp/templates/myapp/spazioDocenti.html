@@ -1,0 +1,77 @@
+{% extends 'myapp/base.html' %}
+
+{% block primary %}
+
+    {% if request.user.groups.all.0.name == 'Docenti' %}
+        <h1>Operazioni:</h1>
+
+        <nav id="linkwrapper">
+            <a id="link1" href="#">Inserisci una nuova proposta</a>
+            &nbsp;
+            <a id="link2" href="#">Proposte di tesi e attività progettuale da lei immesse</a>
+            &nbsp;
+            <a id="link3" href="#"
+               title="Valida le offerte di tirocinio delle aziende per renderle visibili agli studenti o rifiutarle">
+                Valuta le offerte di tirocinio delle aziende</a>
+        </nav>
+
+        <div id="infocontent">
+            <div id="link1content">
+                <h1>Inserisci una nuova proposta:</h1>
+                <form method="POST" class="post-form">
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    <p>
+                        <button type="submit" class="save btn btn-default">Inserisci proposta</button>
+                    </p>
+                </form>
+            </div>
+
+
+            <div id="link2content">
+                <h3>Proposte di tesi e attività progettuale da lei immesse:</h3>
+
+                <ul>
+                    {% for p in proposte %}
+                        <li><a href={% url 'myapp:propostaDettaglioDoc' p.id %}>{{ p.titolo }} ({{ p.tipologia }})
+                            <body vlink="blue"/>
+                        </a></li><br>
+                    {% empty %}
+                        <li>Non ci sono proposte immesse.</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+
+            <div id="link3content">
+                <h3>Valuta le offerte di tirocinio delle aziende:</h3>
+
+                <ul>
+                    {% for o in offerte %}
+                        <li><a href={% url 'myapp:offertaDettaglioDoc' o.id %}>{{ o.titolo }}</a>,
+                            Azienda: {{ o.azienda }}</li>
+                    {% empty %}
+                        <li>Non ci sono offerte da aziende con lei intermediario.</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+
+
+    {% else %}
+        <h3>La pagina è riservata per le operazioni esclusive per i docenti.</h3>
+    {% endif %}<br>
+
+{% endblock primary %}
+
+
+{% block content %}
+    <h1>Per accedere a questa pagina bisogna essere autenticati.</h1><br>
+    Accedi al seguente link:<a href={% url 'myapp:accessoDocenti' %}>Login Docenti
+    <body vlink="blue"/>
+</a>
+{% endblock content %}

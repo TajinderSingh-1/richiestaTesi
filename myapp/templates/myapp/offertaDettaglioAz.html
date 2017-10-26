@@ -1,0 +1,24 @@
+{% extends 'myapp/offertaDettaglioBase.html' %}
+{% load staticfiles %}
+
+{% block aziende %}
+    <dd>
+        <nav>
+            <a href="">Archivia la offerta
+                <body vlink="blue"/>
+            </a>&nbsp;
+            &nbsp;
+            {% if offerta.stato_valutazione == isApprovata %}
+                <a href={% url 'myapp:listarichiedentiO' offerta.id %}>Lista studenti richiedenti.</a>
+            {% endif %}
+        </nav>
+    </dd>
+    {% if offerta.stato_valutazione == isApprovata %}
+        <h4>Questa sua offerta è stata accettata, è visibile agli studenti.</h4>
+    {% elif offerta.stato_valutazione == isRifiutata %}
+        <h4>Questa sua offerta è stata rigettata, pertanto è stata archiviata.</h4>
+        <h4>Data di rifiuto: {{ offerta.data_rifiuto }}</h4>
+    {% else %}
+        <h4>Questa sua offerta non è ancora stata valutata.</h4>
+    {% endif %}
+{% endblock %}

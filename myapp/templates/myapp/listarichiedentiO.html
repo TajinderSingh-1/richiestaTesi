@@ -1,0 +1,30 @@
+{% extends 'myapp/base.html' %}
+
+{% block primary %}
+    <h3>Studenti che richiedono la offerta "{{ offerta.titolo }}":</h3>
+    {% if richieste %}
+        <form method="POST" class="post-form">
+        {% csrf_token %}
+            {% for r in richieste %}
+                <input type="radio" name="studente" value="{{ r.studente.user }}"
+                       {% if r.stato == "approvata" %}checked{% endif %}>{{ r.studente }}
+                <br>
+                <dd>Stato: {{ r.stato }}</dd>
+                <dd>
+                    <details>
+                        <summary>Dettagli studente</summary>
+                        Email: {{ r.studente.email }}<br>
+                        Corso: {{ r.studente.corso }}<br>
+                        Anno di corso: {{ r.studente.anno_corso }}<br>
+                        Crediti: {{ r.studente.crediti }}
+                    </details>
+                </dd>
+                <br>
+            {% endfor %}
+        <br>
+        <button type="submit" class="save btn btn-default">Approva richiesta dello studente selezionato</button>
+        </form>
+    {% else %}
+        <p><u>Non ci sono studenti che richiedono questa offerta.</u></p>
+    {% endif %}
+{% endblock %}

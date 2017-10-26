@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="ISO-8859-1">
+    <title>{% block title %}  {% endblock %}</title>
+</head>
+
+<body>
+
+{% if user.is_authenticated %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.6.2.js"></script>
+    <script type="text/javascript"  src="{% static 'myapp/tab.js' %}"></script>
+
+    <h2>Benvenuto {{ user }},</h2>
+    <nav>
+        <h1>
+            <a href={% url 'myapp:logout' %}>Log Out
+                <body vlink="blue"/>
+            </a>
+        </h1>
+        <h2>
+
+            {% if request.user.groups.all.0.name == 'Aziende' %}
+                <a href={% url 'myapp:spazioAziende' %}>Spazio aziende
+                    <body vlink="blue"/>
+                </a>
+            {% elif request.user.groups.all.0.name == 'Docenti' %}
+                <a href={% url 'myapp:spazioDocenti' %}>Spazio docenti
+                    <body vlink="blue"/>
+                </a>
+            {% elif request.user.groups.all.0.name == 'Studenti' %}
+                <a href={% url 'myapp:spazioStudenti' %}>Spazio studenti
+                    <body vlink="blue"/>
+                </a>
+            {% endif %}
+        </h2>
+    </nav>
+    <hr>
+    {% block primary %}
+
+    {% endblock %}
+{% else %}
+    {% block content %}
+    {% endblock %}
+{% endif %}
+
+</body>
+
+
+</html>

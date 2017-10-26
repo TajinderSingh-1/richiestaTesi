@@ -1,0 +1,57 @@
+{% extends 'myapp/base.html' %}
+
+
+{% block primary %}
+    <h2>Sistema richiesta tesi, tirocinio ed attività progettuale.</h2>
+{% endblock primary %}
+
+
+{% block content %}
+    <h1 align="center">SISTEMA RICHIESTA TESI</h1>
+    <fieldset>
+        <legend><h1>Area di Registrazione</h1></legend>
+        <a href={% url 'myapp:registratiStudenti' %}>Registrati(Studenti)
+            <body vlink="blue"/>
+        </a><br>
+        <a href={% url 'myapp:registratiAziende' %}>Registrati(Aziende)
+            <body vlink="blue"/>
+        </a><br>
+        <a href={% url 'myapp:registratiDocenti' %}>Registrati(Docenti)
+            <body vlink="blue"/>
+        </a>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend><h1>Area di Login</h1></legend>
+        <a href={% url 'myapp:accessoStudenti' %}>Accedi (Studenti)
+            <body vlink="blue"/>
+        </a><br>
+        <a href={% url 'myapp:accessoAziende' %}>Accedi(Aziende)
+            <body vlink="blue"/>
+        </a><br>
+        <a href={% url 'myapp:accessoDocenti' %}>Accedi(Docenti)
+            <body vlink="blue"/>
+        </a><br>
+    </fieldset>
+
+
+{% endblock content %}
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

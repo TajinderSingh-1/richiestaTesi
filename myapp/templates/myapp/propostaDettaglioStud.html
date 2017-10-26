@@ -1,0 +1,25 @@
+{% extends 'myapp/propostaDettaglioBase.html' %}
+{% load staticfiles %}
+
+
+{% block stud %}
+    <li> Effettuata richiesta per questa proposta: {{ studHaRichiestoProposta }}</li>
+{% endblock %}
+
+{% block studenti %}
+
+    <nav>
+        <a id="richiediproposta" href="">Effettua richiesta per la proposta.
+            <body vlink="blue"/>
+        </a>|
+        <a id="cancellarichiesta" href="">Cancella la tua richiesta per la proposta.
+            <body vlink="blue"/>
+        </a>&nbsp;
+
+        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script language="javascript" type="text/javascript"
+                src="{% static 'myapp/richiediproposta.js' %}"></script>
+        <script language="javascript" type="text/javascript"
+                src="{% static 'myapp/token.js' %}"></script>
+    </nav>
+{% endblock %}

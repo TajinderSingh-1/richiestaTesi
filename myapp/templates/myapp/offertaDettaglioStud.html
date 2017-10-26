@@ -1,0 +1,20 @@
+{% extends 'myapp/offertaDettaglioBase.html' %}
+{% load staticfiles %}
+
+{% block studenti %}
+    <nav>
+        <a id="richiediofferta" href="">Effettua Sottomissione per la offerta.
+            <body vlink="blue"/>
+        </a>|
+        <a id="cancellarichiesta" href="">Cancella la tua richiesta per la offerta.
+            <body vlink="blue"/>
+        </a>&nbsp;
+
+
+        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script language="javascript" type="text/javascript"
+                src="{% static 'myapp/richiediofferta.js' %}"></script>
+        <script language="javascript" type="text/javascript"
+                src="{% static 'myapp/token.js' %}"></script>
+    </nav>
+{% endblock %}
