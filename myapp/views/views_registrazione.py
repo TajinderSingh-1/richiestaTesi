@@ -1,8 +1,18 @@
 from django.contrib.auth.models import User, Group
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+
 from myapp.forms import AziendaForm, DocenteForm, StudenteForm
 from myapp.models import Azienda, Docente, Studente, Corso
+from richiestaTesi.settings import EMAIL_HOST_USER
+
+
+def email_registrazione(email, group, username):
+    send_mail("Registrazione Sistema Richiesta Tesi",
+              "Benvenuto " + username + " nel sistema richiesta tesi. "
+                                        "\nTi sei registrato come " + group,
+              EMAIL_HOST_USER, [email], fail_silently=True)
 
 
 def registratiAziende(request):
@@ -21,6 +31,7 @@ def registratiAziende(request):
                 g = Group.objects.get(name='Aziende')
                 g.user_set.add(user)
                 azienda.user = user
+                email_registrazione(azienda.email, 'Azienda', user.username)
                 azienda.save()
                 return redirect('myapp:index')
     else:
@@ -47,6 +58,7 @@ def registratiDocenti(request):
                 g.user_set.add(user)
                 docente.user = user
                 docente.save()
+                email_registrazione(docente.email, 'Docente', user.username)
                 return redirect('myapp:index')
     else:
         form = DocenteForm()
@@ -77,6 +89,7 @@ def registratiStudenti(request):
                 g.user_set.add(user)
                 studente.user = user
                 studente.save()
+                email_registrazione(studente.email, 'Studente', user.username)
                 return redirect('myapp:index')
     else:
         form = StudenteForm()

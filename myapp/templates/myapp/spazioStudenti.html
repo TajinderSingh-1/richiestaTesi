@@ -23,10 +23,6 @@
                title="Tesi, attività progettuali e tirocini per cui hai effettuato la richiesta e questa è stata approvata">
                 Tesi, attività progettuali e tirocini assegnabili</a>
             &nbsp;
-            <a id="link4" href="#"
-               title="Tesi, attività progettuale o tirocinio che era stato approvato e che ti è stato assegnato">
-                Tesi, attività progettuale o tirocinio assegnato</a>
-
         </nav>
 
         <div id="infocontent">
@@ -107,7 +103,12 @@
             <div id="link3content">
                 <h2>Tesi, attività progettuali e tirocini assegnabili(richieste approvate):</h2>
                 {% if not richiesteapprovate and not richiesteOapprovate %}
-                    <li>Nessuna delle sue richieste effettuate è stata per ora accettata.</li>
+                     {% if studente.isAssegnato == True %}
+                    <h2>Hai già accettato una proposta/offerta che ti è stata assegnata: </h2>
+                         {{ profferta }}
+                     {% else %}
+                     <li>Nessuna delle sue richieste effettuate è stata per ora accettata.</li>
+                {% endif %}
                 {% elif studente.isAssegnato == False %}
                     <p>Tra le tue richieste effettuate, ti sono state confermate queste qui, ora scegli quella alla
                         quale
@@ -130,20 +131,9 @@
                             </button>
                         </p>
                     </form>
-                {% else %}
-                    <h1>Hai già accettato una proposta/offerta che ti è stata assegnata</h1>
+
                 {% endif %}
             </div>
-
-            <div id="link4content">
-                <h2>Tesi, attività progettuale o tirocinio assegnato:</h2>
-                {% if studente.isAssegnato is True %}
-                    <h2>Assegnato.</h2>
-                {% else %}
-                    <h2>Non assegnato.</h2>
-                {% endif %}
-            </div>
-
         </div>  <!-- conten container div end-->
 
     {% else %}

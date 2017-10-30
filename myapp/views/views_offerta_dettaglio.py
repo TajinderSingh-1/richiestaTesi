@@ -16,8 +16,8 @@ def offertaDettaglioAz(request, pk):
     if azienda == aziendaApp:
         return render(request, 'myapp/offertaDettaglioAz.html',
                       {'offerta': offerta,
-                       'isApprovata': STATO_OFFERTA0[1][1],
-                       'isRifiutata': STATO_OFFERTA0[2][1]})
+                       'isApprovata': STATO_OFFERTA0[1][0],
+                       'isRifiutata': STATO_OFFERTA0[2][0]})
 
     else:
         raise PermissionDenied
@@ -32,8 +32,8 @@ def offertaDettaglioDoc(request, pk):
     if offerta in offerte:
         return render(request, 'myapp/offertaDettaglioDoc.html',
                       {'offerta': offerta,
-                       'isApprovata': STATO_OFFERTA0[1][1],
-                       'isRifiutata': STATO_OFFERTA0[2][1]})
+                       'isApprovata': STATO_OFFERTA0[1][0],
+                       'isRifiutata': STATO_OFFERTA0[2][0]})
     else:
         raise Http404('not found')
 

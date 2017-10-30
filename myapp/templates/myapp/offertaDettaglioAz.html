@@ -4,10 +4,6 @@
 {% block aziende %}
     <dd>
         <nav>
-            <a href="">Archivia la offerta
-                <body vlink="blue"/>
-            </a>&nbsp;
-            &nbsp;
             {% if offerta.stato_valutazione == isApprovata %}
                 <a href={% url 'myapp:listarichiedentiO' offerta.id %}>Lista studenti richiedenti.</a>
             {% endif %}

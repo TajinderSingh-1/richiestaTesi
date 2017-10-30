@@ -2,13 +2,19 @@
 
 {% block primary %}
     <h3>Studenti che richiedono la proposta "{{ proposta.titolo }}":</h3>
+    {% if proposta.stato == "proposta assegnata" %}
+        <h2>Proposta assegnata allo studente: </h2>
+    {% endif %}
     {% if richieste %}
         <form method="POST" class="post-form">
             {% csrf_token %}
             {% for r in richieste %}
 
-                <input type="radio" name="studente" value="{{ r.studente.user }}"
-                       {% if r.stato == 'approvata' %}checked{% endif %}>{{ r.studente }}
+                {% if proposta.stato != "proposta assegnata" %}
+                    <input type="radio" name="studente" value="{{ r.studente.user }}"
+                           {% if r.stato == 'approvata' %}checked{% endif %}>
+                {% endif %}
+                {{ r.studente }}
                 <br>
                 <dd>Stato: {{ r.stato }}</dd>
                 <dd>
@@ -23,7 +29,9 @@
                 <br>
             {% endfor %}
             <br>
-            <button type="submit" class="save btn btn-default">Approva richiesta dello studente selezionato</button>
+            {% if proposta.stato != "proposta assegnata" %}
+                <button type="submit" class="save btn btn-default">Approva richiesta dello studente selezionato</button>
+            {% endif %}
         </form>
     {% else %}
         <p>
